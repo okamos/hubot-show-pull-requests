@@ -1,8 +1,15 @@
 # Description:
 #   Show pull-requests
 #
+# Configuration:
+#   HUBOT_GITHUB_TOKEN - Your GitHub access token
+#   HUBOT_GITHUB_REPOS_LIMIT - Number of display repositories. default 100
+#   HUBOT_GITHUB_PR_LIMIT - Number of display pull requests. default 100
+#
 # Commands:
-#   hubot show prs - Show organizations pull-requests
+#   hubot show prs [filter] - Show user's repositories pull-requests
+#   hubot show prs org - Show organizations pull-requests
+#   hubot show owner/repository - Show repository pull-requests
 #
 # Author:
 #   Shinichi Okamoto

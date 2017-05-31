@@ -1,5 +1,6 @@
 request = require 'request'
-LIMIT = process.env.HUBOT_GITHUB_REPOS_LIMIT | 100 # default
+RLIMIT = process.env.HUBOT_GITHUB_REPOS_LIMIT | 100 # default
+PLIMIT = process.env.HUBOT_GITHUB_PR_LIMIT | 100 # default
 
 class Form
   constructor: (body) ->
@@ -13,15 +14,15 @@ class Form
     }
 
 orgPRs = (callback) ->
-  form = new Form("{\"query\":\"query{viewer{organizations(first:#{10}){nodes{repositories(first:#{LIMIT}){nodes{name isPrivate pullRequests(first:#{LIMIT},states:OPEN){nodes{url title body}}}}}}}}\"}")
+  form = new Form("{\"query\":\"query{viewer{organizations(first:#{10}){nodes{repositories(first:#{RLIMIT}){nodes{name isPrivate pullRequests(first:#{PLIMIT},states:OPEN){nodes{url title body}}}}}}}}\"}")
   request.post(form.data, callback)
 
 userPRs = (callback) ->
-  form = new Form("{\"query\":\"query{viewer{repositories(first:#{LIMIT}){nodes{name isPrivate pullRequests(first:#{LIMIT},states:OPEN){nodes{url title body}}}}}}\"}")
+  form = new Form("{\"query\":\"query{viewer{repositories(first:#{RLIMIT}){nodes{name isPrivate pullRequests(first:#{PLIMIT},states:OPEN){nodes{url title body}}}}}}\"}")
   request.post(form.data, callback)
 
 repoPRs = (owner, repository, callback) ->
-  form = new Form("{\"query\":\"query{repository(owner:\\\"#{owner}\\\",name:\\\"#{repository}\\\"){name isPrivate pullRequests(first:#{LIMIT},states:OPEN){nodes{url title body}}}}\"}")
+  form = new Form("{\"query\":\"query{repository(owner:\\\"#{owner}\\\",name:\\\"#{repository}\\\"){name isPrivate pullRequests(first:#{PLIMIT},states:OPEN){nodes{url title body}}}}\"}")
   request.post(form.data, callback)
 
 module.exports = {

@@ -13,9 +13,14 @@ class Form
     }
 
 orgPRs = (callback) ->
-  form = new Form("{\"query\":\"query{viewer{organizations(first:#{10}){nodes{repositories(first:#{LIMIT}){nodes{isPrivate pullRequests(first:#{LIMIT},states:OPEN){nodes{url title body}}}}}}}}\"}")
+  form = new Form("{\"query\":\"query{viewer{organizations(first:#{10}){nodes{repositories(first:#{LIMIT}){nodes{name isPrivate pullRequests(first:#{LIMIT},states:OPEN){nodes{url title body}}}}}}}}\"}")
+  request.post(form.data, callback)
+
+userPRs = (callback) ->
+  form = new Form("{\"query\":\"query{viewer{repositories(first:#{LIMIT}){nodes{name isPrivate pullRequests(first:#{LIMIT},states:OPEN){nodes{url title body}}}}}}\"}")
   request.post(form.data, callback)
 
 module.exports = {
   orgPRs
+  userPRs
 }

@@ -26,7 +26,8 @@ eachPullRequests = (repository) ->
 
 eachRepos = (nodes) ->
   for repository in nodes
-    eachPullRequests(repository)
+    if (!filter || repository.name.indexOf(filter) >= 0)
+      eachPullRequests(repository)
 
 module.exports = (robot) ->
   robot.respond /show prs? (.*)\/(.*)/, (msg) ->
@@ -37,16 +38,18 @@ module.exports = (robot) ->
       repo = json.data.repository
       eachPullRequests(repo)
 
-  robot.respond /show prs?/, (msg) ->
+  robot.respond /show prs? ?(.*)?/, (msg) ->
+    filter = msg.match[1]
     github.userPRs (err, httpResponse, body) ->
       json = JSON.parse(body)
       repos = json.data.viewer.repositories.nodes
-      eachRepos(repos)
+      eachRepos(repos, filter)
 
 
-  robot.respond /show prs? org/, (msg) ->
+  robot.respond /show prs? org ?(.*)?/, (msg) ->
+    filter = msg.match[1]
     github.orgPRs (err, httpResponse, body) ->
       json = JSON.parse(body)
       orgs = json.data.viewer.organizations.nodes
       for org in orgs
-        eachRepos org.repositories.nodes
+        eachRepos(org.repositories.nodes, filter)

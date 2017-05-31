@@ -1,6 +1,6 @@
 {
   "name": "hubot-show-pull-requests",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "main": "src/index.coffee",
   "repository": "https://github.com/okamos/hubot-show-pull-requests",
   "author": "okamos <himinato.k@gmail.com>",

@@ -26,7 +26,7 @@ HUBOT_GITHUB_PR_LIMIT=100 # optional. Number of display pull requests. default 1
 exec node_modules/.bin/hubot --name "hubot" "$@"
 ```
 
-[permit organization](https://raw.githubusercontent.com/okamos/hubot-show-pull-requests/master/assets/edit_access_token.png)
+![permit organization](https://raw.githubusercontent.com/okamos/hubot-show-pull-requests/master/assets/edit_access_token.png)
 
 
 ## Usage

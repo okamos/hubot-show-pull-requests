@@ -9,23 +9,34 @@
 
 github = require './github/github.coffee'
 
+eachPullRequests = (repository) ->
+  if repository.isPrivate
+    for pullRequest in repository.pullRequests.nodes
+      msg.send(
+        attachments: [
+          title: "[#{repository.name}]#{pullRequest.title}"
+          title_link: pullRequest.url
+          text: pullRequest.body
+          color: 'info'
+        ]
+      )
+  else
+    for pullRequest in repository.pullRequests.nodes
+      msg.send(pullRequest.url)
+
 eachRepos = (nodes) ->
   for repository in nodes
-    if repository.isPrivate
-      for pullRequest in repository.pullRequests.nodes
-        msg.send(
-          attachments: [
-            title: "[#{repository.name}]#{pullRequest.title}"
-            title_link: pullRequest.url
-            text: pullRequest.body
-            color: 'info'
-          ]
-        )
-    else
-      for pullRequest in repository.pullRequests.nodes
-        msg.send(pullRequest.url)
+    eachPullRequests(repository)
 
 module.exports = (robot) ->
+  robot.respond /show prs? (.*)\/(.*)/, (msg) ->
+    owner = msg.match[1]
+    repository = msg.match[2]
+    github.repoPRs owner, repository, (err, httpResponse, body) ->
+      json = JSON.parse(body)
+      repo = json.data.repository
+      eachPullRequests(repo)
+
   robot.respond /show prs?/, (msg) ->
     github.userPRs (err, httpResponse, body) ->
       json = JSON.parse(body)

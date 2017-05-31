@@ -20,7 +20,12 @@ userPRs = (callback) ->
   form = new Form("{\"query\":\"query{viewer{repositories(first:#{LIMIT}){nodes{name isPrivate pullRequests(first:#{LIMIT},states:OPEN){nodes{url title body}}}}}}\"}")
   request.post(form.data, callback)
 
+repoPRs = (owner, repository, callback) ->
+  form = new Form("{\"query\":\"query{repository(owner:\\\"#{owner}\\\",name:\\\"#{repository}\\\"){name isPrivate pullRequests(first:#{LIMIT},states:OPEN){nodes{url title body}}}}\"}")
+  request.post(form.data, callback)
+
 module.exports = {
   orgPRs
   userPRs
+  repoPRs
 }

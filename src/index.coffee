@@ -15,7 +15,7 @@ eachRepos = (nodes) ->
       for pullRequest in repository.pullRequests.nodes
         msg.send(
           attachments: [
-            title: pullRequest.title
+            title: "[#{repository.name}]#{pullRequest.title}"
             title_link: pullRequest.url
             text: pullRequest.body
             color: 'info'

@@ -16,5 +16,16 @@ module.exports = (robot) ->
       orgs = json.data.viewer.organizations.nodes
       for org in orgs
         for repository in org.repositories.nodes
-          for pullRequest in repository.pullRequests.nodes
-            msg.send(pullRequest.url)
+          if repository.isPrivate
+            for pullRequest in repository.pullRequests.nodes
+              msg.send(
+                attachments: [
+                  title: pullRequest.title
+                  title_link: pullRequest.url
+                  text: pullRequest.body
+                  color: 'info'
+                ]
+              )
+          else
+            for pullRequest in repository.pullRequests.nodes
+              msg.send(pullRequest.url)
